@@ -42,4 +42,24 @@ class AuthCubit extends Cubit<AuthState> {
       return true;
     }
   }
+  //  Future<void> refreshToken() async {
+  //   final refreshToken = await AuthLocal.getRefreshToken();
+  //   try {
+  //     if (refreshToken != null) {
+  //       emit(AuthLoading());
+
+  //       final data = await authApi.refresh(refreshToken: refreshToken);
+  //       final accessToken = data;
+
+  //       Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
+  //       final userId = decodedToken['user_id'];
+  //       await AuthLocal.setUserId(userId);
+  //       await AuthLocal.setAccessToken(accessToken);
+
+  //       emit(Authenticated(token: accessToken));
+  //     }
+  //   } catch (e) {
+  //     emit(AuthError(message: e.toString()));
+  //   }
+  // }
 }

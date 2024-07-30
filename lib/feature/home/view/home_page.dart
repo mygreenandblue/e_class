@@ -2,6 +2,7 @@
 
 import 'package:eclass/core/widgets/full_screen_search.dart';
 import 'package:eclass/feature/home/cubit/home_cubit.dart';
+import 'package:eclass/feature/home/widgets/grid_feature.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eclass/core/extensions/flutter_extentions.dart';
@@ -21,32 +22,52 @@ class _HomePageState extends State<HomePage> {
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height / 2,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0xFF001719),
-                            Color(0xFF1B807C),
-                            Color(0xFF8DD3CB),
-                            // Color(0xFF016D69),
-                          ],
-                        ),
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF001719),
+                          Color(0xFF1B807C),
+                          Color(0xFF8DD3CB),
+                          // Color(0xFF016D69),
+                        ],
                       ),
-                      child: Column(children: [
-                        _buildSearchBar(context),
-                        _buildGreeting(context),
-                      ]).padded(8),
                     ),
-                    _buildGridMainFeature1(context),
-                    _buildGridMainFeature2(context)
-                  ],
+                    child: Column(children: [
+                      _buildSearchBar(context),
+                      _buildGreeting(context),
+                    ]).padded(8),
+                  ),
+                  _buildGridMainFeature1(context),
+                  _buildGridMainFeature2(context)
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: const Text(
+                'Dịch vụ nổi bật',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ).paddedLTRB(8, 16, 8, 0),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(8),
+              sliver: SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return GridItem(index: index);
+                  },
+                  childCount: 9, // Number of items
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 1.5,
                 ),
               ),
             ),

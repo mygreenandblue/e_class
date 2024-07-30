@@ -45,18 +45,8 @@ class AuthenticationApiImpl implements AuthenticationApi {
   Future<String> refresh({required String refreshToken}) async {
     try {
       final response = await client.post(
-        "/user/api/token/",
-        data: {
-          "refresh": refreshToken,
-        },
-        options: Options(
-          sendTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10),
-          followRedirects: false,
-          headers: {
-            "Accept": "application/json",
-          },
-        ),
+        "/user/api/token/refresh/",
+        data: {"refresh": refreshToken},
       );
 
       return response.data['access'];

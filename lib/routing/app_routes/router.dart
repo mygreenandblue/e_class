@@ -26,21 +26,21 @@ Page getPage({
 }
 
 final router = GoRouter(
-  initialLocation: AppRouter.loginPath,
+  initialLocation: AppRouter.homePath,
   navigatorKey: rootNavigatorKey,
-  redirect: (BuildContext context, GoRouterState state) async {
-    final token = await AuthLocal.getAccessToken();
-    if (state.matchedLocation == AppRouter.loginPath && token != null) {
-      final isExpired = context.read<AuthCubit>().isTokenExpired(token);
+  // redirect: (BuildContext context, GoRouterState state) async {
+  //   final token = await AuthLocal.getAccessToken();
+  //   if (state.matchedLocation == AppRouter.loginPath && token != null) {
+  //     final isExpired = context.read<AuthCubit>().isTokenExpired(token);
 
-      if (isExpired) {
-        return AppRouter.loginPath;
-      } else {
-        return AppRouter.homePath;
-      }
-    }
-    return null;
-  },
+  //     if (isExpired) {
+  //       return AppRouter.loginPath;
+  //     } else {
+  //       return AppRouter.homePath;
+  //     }
+  //   }
+  //   return null;
+  // },
   routes: [
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,
