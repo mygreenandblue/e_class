@@ -7,3 +7,4 @@ final notificationNavigatorKey = GlobalKey<NavigatorState>();
 final contactNavigatorKey = GlobalKey<NavigatorState>();
 final classNavigatorKey = GlobalKey<NavigatorState>();
 final settingNavigatorKey = GlobalKey<NavigatorState>();
+final bookingNavigatorKey = GlobalKey<NavigatorState>();

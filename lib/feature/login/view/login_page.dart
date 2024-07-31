@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eclass/feature/login/cubit/auth_cubit.dart';
-import 'package:eclass/routing/routes.dart';
+import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

@@ -8,4 +8,6 @@ class AppRouter {
   static const String settingPath = '/setting';
   static const String classPath = '/classroom';
   static const String contactPath = '/contact';
+  static const String booking = '/booking';
+  static const String bookingCalendar = '/booking-calendar';
 }

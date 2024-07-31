@@ -51,12 +51,12 @@ class ScaffoldWithNavigationBarState extends State<ScaffoldWithNavigationBar> {
           ),
           _toggleDestination(
             NavigationDestination(
-              icon: const Icon(Icons.school_outlined),
+              icon: const Icon(Icons.health_and_safety_outlined),
               selectedIcon: Icon(
-                Icons.school_outlined,
+                Icons.health_and_safety_outlined,
                 color: theme.primaryColor,
               ),
-              label: 'Lớp học',
+              label: 'Sức khỏe',
             ),
             disableWhen: false,
           ),

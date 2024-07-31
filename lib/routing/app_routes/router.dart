@@ -1,15 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eclass/core/local/auth_local.dart';
+import 'package:eclass/feature/booking/booking_page.dart';
+import 'package:eclass/feature/booking_calendar/booking_calendar_page.dart';
 import 'package:eclass/feature/bottom_navigation/scaffold_with_navigation_bar.dart';
-import 'package:eclass/feature/classroom/view/classroom_page.dart';
+import 'package:eclass/feature/medical_exam_info/view/medical_exam_info_page.dart';
 import 'package:eclass/feature/contact/contact_page.dart';
 import 'package:eclass/feature/home/view/home_page.dart';
 import 'package:eclass/feature/login/cubit/auth_cubit.dart';
 import 'package:eclass/feature/login/view/login_page.dart';
 import 'package:eclass/feature/notification/view/notification_page.dart';
 import 'package:eclass/feature/setting/setting_page.dart';
-import 'package:eclass/routing/routes.dart';
+import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:eclass/routing/navigation_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +59,24 @@ final router = GoRouter(
                 );
               },
             ),
+            GoRoute(
+              path: AppRouter.booking,
+              pageBuilder: (context, GoRouterState state) {
+                return getPage(
+                  child: const BookingPage(),
+                  state: state,
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRouter.bookingCalendar,
+              pageBuilder: (context, GoRouterState state) {
+                return getPage(
+                  child: const BookingCalendarPage(),
+                  state: state,
+                );
+              },
+            ),
           ],
         ),
         StatefulShellBranch(
@@ -80,7 +100,7 @@ final router = GoRouter(
               path: AppRouter.classPath,
               pageBuilder: (context, state) {
                 return getPage(
-                  child: const ClassroomPage(),
+                  child: const MedicalExamInfoPage(),
                   state: state,
                 );
               },

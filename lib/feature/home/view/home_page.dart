@@ -3,9 +3,12 @@
 import 'package:eclass/core/widgets/full_screen_search.dart';
 import 'package:eclass/feature/home/cubit/home_cubit.dart';
 import 'package:eclass/feature/home/widgets/grid_feature.dart';
+import 'package:eclass/feature/home/widgets/main_feature_item.dart';
+import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eclass/core/extensions/flutter_extentions.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -81,21 +84,23 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
+        MainFeatureItem(
+            color: const Color(0xFF0D72C0),
+            iconColor: Colors.white,
+            onTap: () {
+              context.push(AppRouter.booking);
+            },
+            label: 'Đặt lịch',
+            icons: Icons.apartment_outlined),
         const SizedBox(width: 8),
-        Expanded(
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
+        MainFeatureItem(
+            color: const Color(0xFF0D72C0),
+            iconColor: Colors.white,
+            onTap: () {
+              context.push('/booking');
+            },
+            label: 'Đơn thuốc',
+            icons: Icons.receipt_outlined),
       ],
     ).paddedLTRB(8, 4, 8, 4);
   }
@@ -104,21 +109,23 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
+        MainFeatureItem(
+            color: const Color(0xFF1B807C),
+            iconColor: Colors.red,
+            onTap: () {
+              context.push('/booking');
+            },
+            label: 'Gọi cấp cứu',
+            icons: Icons.local_hospital_outlined),
         const SizedBox(width: 8),
-        Expanded(
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
+        MainFeatureItem(
+            color: const Color(0xFF1B807C),
+            iconColor: Colors.white,
+            onTap: () {
+              context.push('/booking');
+            },
+            label: 'Thông tin khám',
+            icons: Icons.medical_information_outlined),
       ],
     ).paddedLTRB(8, 4, 8, 4);
   }
