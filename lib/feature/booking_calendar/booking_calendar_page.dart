@@ -47,7 +47,7 @@ class _BookingCalendarPageState extends State<BookingCalendarPage> {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.teal, // Button color
+                backgroundColor: Colors.teal, // Button color
                 minimumSize:
                     const Size(double.infinity, 50), // Full-width button
               ),

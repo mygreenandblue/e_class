@@ -1,4 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:eclass/core/local/auth_local.dart';
+import 'package:eclass/feature/login/cubit/auth_cubit.dart';
+import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -16,12 +23,13 @@ class _SettingPageState extends State<SettingPage> {
       ),
       body: ListView(
         children: [
-          const ListTile(
-            leading: CircleAvatar(
+          ListTile(
+            leading: const CircleAvatar(
               child: Icon(Icons.person_rounded),
             ),
-            title: Text('ĐỖ ĐĂNG TÙNG'),
-            subtitle: Text('Đăng nhập gần đây: 11:53 SA, 31/07/2024'),
+            title: const Text('ĐỖ ĐĂNG TÙNG'),
+            subtitle: const Text('Đăng nhập gần đây: 11:53 SA, 31/07/2024'),
+            onTap: () => context.push(AppRouter.profilePath),
           ),
           const Divider(),
           ListTile(
@@ -41,8 +49,12 @@ class _SettingPageState extends State<SettingPage> {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Đăng xuất'),
-            onTap: () {
-              // Handle logout
+            onTap: () async {
+              context.read<AuthCubit>().logout();
+              final token = await AuthLocal.getAccessToken();
+              if (token == null) {
+                context.go(AppRouter.loginPath);
+              }
             },
           ),
           const Divider(),

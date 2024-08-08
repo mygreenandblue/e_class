@@ -18,19 +18,19 @@ class TimeSlotsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 3,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
       ),
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       itemCount: timeSlots.length,
       itemBuilder: (context, index) {
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.white, // Button color
-            onPrimary: Colors.black, // Text color
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.white, // Text color
           ),
           onPressed: () {
             // Handle time slot selection

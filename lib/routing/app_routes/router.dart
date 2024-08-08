@@ -1,15 +1,19 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:eclass/core/local/auth_local.dart';
+import 'package:eclass/feature/address_form/address_form.dart';
+import 'package:eclass/feature/address_form/cubit/address_cubit.dart';
 import 'package:eclass/feature/booking/booking_page.dart';
 import 'package:eclass/feature/booking_calendar/booking_calendar_page.dart';
 import 'package:eclass/feature/bottom_navigation/scaffold_with_navigation_bar.dart';
 import 'package:eclass/feature/medical_exam_info/view/medical_exam_info_page.dart';
 import 'package:eclass/feature/contact/contact_page.dart';
 import 'package:eclass/feature/home/view/home_page.dart';
-import 'package:eclass/feature/login/cubit/auth_cubit.dart';
 import 'package:eclass/feature/login/view/login_page.dart';
 import 'package:eclass/feature/notification/view/notification_page.dart';
+import 'package:eclass/feature/profile/cubit/profile_cubit.dart';
+import 'package:eclass/feature/profile/profile_page.dart';
+import 'package:eclass/feature/profile_edit/profile_edit_page.dart';
+import 'package:eclass/feature/remote_consult/view/remote_consult_page.dart';
 import 'package:eclass/feature/setting/setting_page.dart';
 import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:eclass/routing/navigation_keys.dart';
@@ -77,6 +81,12 @@ final router = GoRouter(
                 );
               },
             ),
+            GoRoute(
+              path: AppRouter.remoteConsult,
+              builder: (context, state) {
+                return const RemoteConsultPage();
+              },
+            ),
           ],
         ),
         StatefulShellBranch(
@@ -130,6 +140,37 @@ final router = GoRouter(
                 return getPage(
                   child: const SettingPage(),
                   state: state,
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRouter.profilePath,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (context) => ProfileCubit(),
+                  child: const ProfilePage(),
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRouter.profileEditPath,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (context) {
+                    return ProfileCubit();
+                  },
+                  child: const ProfileEditPage(),
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRouter.addressFormPath,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (context) {
+                    return AddressCubit();
+                  },
+                  child: const AddressForm(),
                 );
               },
             ),

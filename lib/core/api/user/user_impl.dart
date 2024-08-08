@@ -11,13 +11,13 @@ class UserApiImpl implements UserApi {
 
   @override
   Future getUser({required int userId}) async {
-    final result = await getCollection(
-      "/accounts/api/users",
+    final result = await getSingleResult(
+      "/accounts/api/users/$userId/",
       UserModel.fromJson,
       ErrorCode.loadUserFail,
       client: client,
     );
 
-    return result.where((view) => userId == view.id);
+    return result;
   }
 }

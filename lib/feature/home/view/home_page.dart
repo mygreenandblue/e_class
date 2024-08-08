@@ -57,22 +57,37 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ).paddedLTRB(8, 16, 8, 0),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return GridItem(index: index);
-                  },
-                  childCount: 9, // Number of items
-                ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
-                  childAspectRatio: 1.5,
-                ),
-              ),
+            SliverToBoxAdapter(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GridItem(
+                      label: 'Đăth lịch tư vấn từ xa',
+                      onTap: () {
+                        context.push(AppRouter.remoteConsult);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Expanded(
+                    child: GridItem(
+                      label: 'Đăth lịch tư vấn từ xa',
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Expanded(
+                    child: GridItem(
+                      label: 'Đăth lịch tư vấn từ xa',
+                      onTap: () {},
+                    ),
+                  ),
+                ],
+              ).paddedLTRB(8, 16, 8, 0),
             ),
           ],
         ),
@@ -113,7 +128,7 @@ class _HomePageState extends State<HomePage> {
             color: const Color(0xFF1B807C),
             iconColor: Colors.red,
             onTap: () {
-              context.push('/booking');
+              context.push(AppRouter.booking);
             },
             label: 'Gọi cấp cứu',
             icons: Icons.local_hospital_outlined),
@@ -200,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                     return const Text('!');
                   } else if (state is Loaded) {
                     return Text(
-                      '${state.userModel.id} ${state.userModel.username}',
+                      ' ${state.userModel.username}',
                       style: const TextStyle(color: Colors.white),
                     );
                   } else if (state is HomeError) {

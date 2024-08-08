@@ -1,22 +1,36 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:eclass/core/extensions/flutter_extentions.dart';
 import 'package:flutter/material.dart';
 
 class GridItem extends StatelessWidget {
-  final int index;
+  final String label;
+  final Function() onTap;
+  final IconData? iconData;
 
-  const GridItem({super.key, required this.index});
+  const GridItem({
+    Key? key,
+    required this.label,
+    required this.onTap,
+    this.iconData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Icon(
-          Icons.featured_play_list,
-          size: 50,
-        ),
-        Text(
-          'Item $index',
-        ),
-      ],
-    );
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Icon(
+            iconData ?? Icons.featured_play_list_outlined,
+            size: 50,
+          ),
+          Text(
+            label,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+        ],
+      ),
+    ).padded(8);
   }
 }

@@ -33,4 +33,7 @@ enum ErrorCode {
   authenticationFailed,
   notAuthenticated,
   loadUserFail,
+  loadProfileFail,
+  createProfileFail,
+  updateProfileFail,
 }

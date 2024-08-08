@@ -19,10 +19,8 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeLoading());
       final userId = await AuthLocal.getUserId();
       if (userId != null) {
-        final Iterable<UserModel> data = await userApi.getUser(userId: userId);
-        final userModel = data.firstWhere(
-          (user) => user.id == userId,
-        );
+        final UserModel data = await userApi.getUser(userId: userId);
+        final userModel = data;
         emit(Loaded(userModel: userModel));
       } else {
         emit(const HomeError(message: 'Load fail'));
@@ -35,28 +33,11 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getlistUser(int? id) async {
     try {
       emit(HomeLoading());
-
       if (id != null) {
         final data = await userApi.getUser(userId: id);
         print(data);
         allUsers = data;
         emit(GetListUser(userModels: data));
-      } else {
-        emit(const HomeError(message: 'Load fail'));
-      }
-    } catch (e) {
-      emit(HomeError(message: e.toString()));
-    }
-  }
-
-  Future<void> get1User(int? id) async {
-    try {
-      emit(HomeLoading());
-
-      if (id != null) {
-        final data = await userApi.getUser(userId: id);
-        print(data);
-        emit(Loaded(userModel: data.first));
       } else {
         emit(const HomeError(message: 'Load fail'));
       }

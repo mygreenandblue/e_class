@@ -1,5 +1,4 @@
 import 'package:eclass/routing/app_routes/route_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -175,8 +174,8 @@ class _BookingPageState extends State<BookingPage> {
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('Ảnh đính kèm'),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.grey[300],
-                      onPrimary: Colors.black,
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.grey[300],
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 10),
                     ),
@@ -197,7 +196,7 @@ class _BookingPageState extends State<BookingPage> {
                   // Handle the continue action
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.teal,
+                  backgroundColor: Colors.teal,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
