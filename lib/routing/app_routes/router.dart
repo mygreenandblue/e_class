@@ -9,6 +9,7 @@ import 'package:eclass/feature/login/cubit/auth_cubit.dart';
 import 'package:eclass/feature/login/view/login_page.dart';
 import 'package:eclass/feature/notification/view/notification_page.dart';
 import 'package:eclass/feature/setting/setting_page.dart';
+import 'package:eclass/feature/splash/splash_page.dart';
 import 'package:eclass/routing/routes.dart';
 import 'package:eclass/routing/navigation_keys.dart';
 import 'package:flutter/material.dart';
@@ -28,19 +29,19 @@ Page getPage({
 final router = GoRouter(
   initialLocation: AppRouter.loginPath,
   navigatorKey: rootNavigatorKey,
-  redirect: (BuildContext context, GoRouterState state) async {
-    final token = await AuthLocal.getAccessToken();
-    if (state.matchedLocation == AppRouter.loginPath && token != null) {
-      final isExpired = context.read<AuthCubit>().isTokenExpired(token);
+  // redirect: (BuildContext context, GoRouterState state) async {
+  //   final token = await AuthLocal.getAccessToken();
+  //   if (state.matchedLocation == AppRouter.loginPath && token != null) {
+  //     final isExpired = context.read<AuthCubit>().isTokenExpired(token);
 
-      if (isExpired) {
-        return AppRouter.loginPath;
-      } else {
-        return AppRouter.homePath;
-      }
-    }
-    return null;
-  },
+  //     if (isExpired) {
+  //       return AppRouter.loginPath;
+  //     } else {
+  //       return AppRouter.homePath;
+  //     }
+  //   }
+  //   return null;
+  // },
   routes: [
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,
@@ -134,6 +135,12 @@ final router = GoRouter(
       path: AppRouter.loginPath,
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: LoginPage()),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: AppRouter.splashPath,
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: SplashPage()),
     ),
   ],
 );

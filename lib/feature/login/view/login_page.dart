@@ -40,10 +40,10 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() ?? false) {
       final username = phoneController.text;
       final password = passwordController.text;
-      await context.read<AuthCubit>().login(username, password);
-      if (context.read<AuthCubit>().state.isAuthenticated) {
-        context.go(AppRouter.homePath);
-      }
+      // await context.read<AuthCubit>().login(username, password);
+      // if (context.read<AuthCubit>().state.isAuthenticated) {
+      context.go(AppRouter.splashPath);
+      // }
     } else {}
     setState(() {
       isLoading = false;
