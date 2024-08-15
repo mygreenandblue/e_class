@@ -10,8 +10,11 @@ class AppRouter {
   static const String contactPath = '/contact';
   static const String booking = '/booking';
   static const String bookingCalendar = '/booking-calendar';
+  static const String bookingDoctor = '/booking-doctor';
+  static const String appoitmentDetail = '/appoitment-detail';
   static const String profilePath = '/profile';
   static const String profileEditPath = '/profile-edit';
   static const String addressFormPath = '/address-form';
-  static const String remoteConsult = '/remote_consult';
+  static const String remoteConsult = '/remote-consult';
+  static const String doctorDetail = '/doctor-detail';
 }

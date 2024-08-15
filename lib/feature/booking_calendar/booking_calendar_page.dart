@@ -18,7 +18,6 @@ class _BookingCalendarPageState extends State<BookingCalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
         title: const Text("Chọn thời gian khám"),
       ),
       body: Column(
@@ -54,7 +53,10 @@ class _BookingCalendarPageState extends State<BookingCalendarPage> {
               onPressed: () {
                 // Handle continue button press
               },
-              child: const Text("Tiếp tục"),
+              child: const Text(
+                "Tiếp tục",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],

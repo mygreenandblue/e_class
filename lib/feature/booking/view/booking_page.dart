@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:eclass/core/extensions/flutter_extentions.dart';
+import 'package:eclass/feature/booking/widgets/upload_image.dart';
 import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +21,15 @@ class _BookingPageState extends State<BookingPage> {
   String? selectedBacSi;
   String? selectedThoiGianDenKham;
   TextEditingController ghiChuController = TextEditingController();
+  String? _selectedImagePath;
+  File? _selectedImageFile;
+
+  void _onImageSelected(String? path, File? file) {
+    setState(() {
+      _selectedImagePath = path;
+      _selectedImageFile = file;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,19 +130,14 @@ class _BookingPageState extends State<BookingPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
-                value: selectedBacSi,
-                items: const [
-                  DropdownMenuItem(value: 'Bác sĩ 1', child: Text('Bác sĩ 1')),
-                  DropdownMenuItem(value: 'Bác sĩ 2', child: Text('Bác sĩ 2')),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    selectedBacSi = value;
-                  });
+              TextFormField(
+                readOnly: true,
+                onTap: () {
+                  context.push(AppRouter.bookingDoctor);
                 },
                 decoration: const InputDecoration(
-                  labelText: 'Bác sĩ',
+                  labelText: 'Chọn bác sĩ',
+                  suffixIcon: Icon(Icons.person_add_outlined),
                 ),
               ),
               const SizedBox(height: 20),
@@ -164,43 +172,41 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Row(
+              Column(
                 children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // Handle file attachment
-                    },
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('Ảnh đính kèm'),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: Colors.grey[300],
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                    ),
+                  UploadImage(onImageSelected: _onImageSelected),
+                  const Text(
+                    'Đính kèm giấy hẹn khám, giấy chuyển viện, ... nếu có',
+                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
                   ),
-                  const SizedBox(width: 10),
-                  const Expanded(
-                    child: Text(
-                      'Đính kèm giấy hẹn khám, giấy chuyển viện, ... nếu có',
-                      style:
-                          TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-                    ),
-                  ),
+                  if (_selectedImageFile != null)
+                    Image.file(
+                      _selectedImageFile!,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    ).padded(16),
                 ],
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle the continue action
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                ),
-                child: const Text('Tiếp tục'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(AppRouter.appoitmentDetail);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 12),
+                    ),
+                    child: const Text(
+                      'Tiếp tục',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

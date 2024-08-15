@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:eclass/core/widgets/custom_search_field.dart';
 import 'package:eclass/core/widgets/full_screen_search.dart';
 import 'package:eclass/feature/home/cubit/home_cubit.dart';
 import 'package:eclass/feature/home/widgets/grid_feature.dart';
@@ -157,30 +158,10 @@ class _HomePageState extends State<HomePage> {
           width: 8,
         ),
         Expanded(
-          child: TextFormField(
-            onTap: () => _showFullScreenSearch(context),
-            decoration: InputDecoration(
-                prefixIcon: SizedBox(
-                  width: 40,
-                  height: 30,
-                  child: Center(
-                    child: Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
-                ),
-                hintText: 'Tìm kiếm tính năng',
-                hintStyle: const TextStyle(color: Colors.grey, fontSize: 12),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(color: Colors.grey)),
-                contentPadding: const EdgeInsets.all(4)),
-            onTapOutside: (event) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-          ),
-        )
+            child: CustomSearchField(
+          onTap: (p0) => _showFullScreenSearch(context),
+          hintText: 'Tìm kiếm tính năng',
+        ))
       ],
     ).paddedLTRB(0, 8, 0, 8);
   }

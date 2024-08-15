@@ -2,8 +2,11 @@
 
 import 'package:eclass/feature/address_form/address_form.dart';
 import 'package:eclass/feature/address_form/cubit/address_cubit.dart';
-import 'package:eclass/feature/booking/booking_page.dart';
+import 'package:eclass/feature/booking/view/appoitment_detail.dart';
+import 'package:eclass/feature/booking/view/booking_page.dart';
 import 'package:eclass/feature/booking_calendar/booking_calendar_page.dart';
+import 'package:eclass/feature/booking_doctor/view/booking_doctor_page.dart';
+import 'package:eclass/feature/booking_doctor/view/doctor_detail_page.dart';
 import 'package:eclass/feature/bottom_navigation/scaffold_with_navigation_bar.dart';
 import 'package:eclass/feature/medical_exam_info/view/medical_exam_info_page.dart';
 import 'package:eclass/feature/contact/contact_page.dart';
@@ -85,6 +88,24 @@ final router = GoRouter(
               path: AppRouter.remoteConsult,
               builder: (context, state) {
                 return const RemoteConsultPage();
+              },
+            ),
+            GoRoute(
+              path: AppRouter.appoitmentDetail,
+              pageBuilder: (context, GoRouterState state) {
+                return getPage(
+                  child: AppointmentDetailsPage(),
+                  state: state,
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRouter.bookingDoctor,
+              pageBuilder: (context, GoRouterState state) {
+                return getPage(
+                  child: BookingDoctorPage(),
+                  state: state,
+                );
               },
             ),
           ],
@@ -195,6 +216,11 @@ final router = GoRouter(
       path: AppRouter.loginPath,
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: LoginPage()),
+    ),
+    GoRoute(
+      path: AppRouter.doctorDetail,
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: DoctorDetailPage()),
     ),
   ],
 );
