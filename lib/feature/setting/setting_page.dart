@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:eclass/core/local/auth_local.dart';
+import 'package:eclass/feature/home/cubit/home_cubit.dart';
 import 'package:eclass/feature/login/cubit/auth_cubit.dart';
 import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +24,36 @@ class _SettingPageState extends State<SettingPage> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            leading: const CircleAvatar(
-              child: Icon(Icons.person_rounded),
+          BlocProvider(
+            create: (context) => HomeCubit()..getUser(),
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                if (state is HomeInitial) {
+                  return const Text('!');
+                } else if (state is HomeLoading) {
+                  return const Text('!');
+                } else if (state is Loaded) {
+                  final firstName = state.userModel.firstName;
+                  final lastName = state.userModel.lastName;
+                  return ListTile(
+                    leading: const CircleAvatar(
+                      child: Icon(Icons.person_rounded),
+                    ),
+                    title: Text(firstName != null && lastName != null
+                        ? firstName.isNotEmpty && lastName.isNotEmpty
+                            ? '$firstName $lastName '
+                            : 'Ho va ten'
+                        : 'Ho va ten'),
+                    subtitle:
+                        const Text('Đăng nhập gần đây: 11:53 SA, 31/07/2024'),
+                    onTap: () => context.push(AppRouter.profilePath),
+                  );
+                } else if (state is HomeError) {
+                  return const Text('!');
+                }
+                return Container();
+              },
             ),
-            title: const Text('ĐỖ ĐĂNG TÙNG'),
-            subtitle: const Text('Đăng nhập gần đây: 11:53 SA, 31/07/2024'),
-            onTap: () => context.push(AppRouter.profilePath),
           ),
           const Divider(),
           ListTile(

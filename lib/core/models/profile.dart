@@ -5,22 +5,23 @@ part 'profile.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Profile {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? dateOfBirth;
-  String? gender;
-  String? image;
-  String? cmnd;
-  String? thebhyt;
-  String? address;
-  String? nation;
-  String? nationality;
-  String? phoneNumber;
-  String? email;
-  String? job;
-  String? emergencyContact;
-  Profile({
+  final int? id;
+  final String? firstName;
+  final String? lastName;
+  final String? dateOfBirth;
+  final String? gender;
+  final String? image;
+  final String? cmnd;
+  final String? thebhyt;
+  final String? currentAddress;
+  final String? address;
+  final String? nation;
+  final String? nationality;
+  final String? phoneNumber;
+  final String? email;
+  final String? job;
+  final String? emergencyContact;
+  const Profile({
     required this.id,
     this.firstName,
     this.lastName,
@@ -36,6 +37,7 @@ class Profile {
     this.email,
     this.job,
     this.emergencyContact,
+    this.currentAddress,
   });
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
@@ -51,6 +53,7 @@ class Profile {
     String? image,
     String? cmnd,
     String? thebhyt,
+    String? currentAddress,
     String? address,
     String? nation,
     String? nationality,
@@ -68,6 +71,7 @@ class Profile {
       image: image ?? this.image,
       cmnd: cmnd ?? this.cmnd,
       thebhyt: thebhyt ?? this.thebhyt,
+      currentAddress: currentAddress ?? this.currentAddress,
       address: address ?? this.address,
       nation: nation ?? this.nation,
       nationality: nationality ?? this.nationality,

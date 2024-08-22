@@ -9,7 +9,7 @@ class AppRouter {
   static const String classPath = '/classroom';
   static const String contactPath = '/contact';
   static const String booking = '/booking';
-  static const String bookingCalendar = '/booking-calendar';
+  static const String bookingCalendar = '/booking-calendar/:doctorId';
   static const String bookingDoctor = '/booking-doctor';
   static const String appoitmentDetail = '/appoitment-detail';
   static const String profilePath = '/profile';
@@ -17,4 +17,5 @@ class AppRouter {
   static const String addressFormPath = '/address-form';
   static const String remoteConsult = '/remote-consult';
   static const String doctorDetail = '/doctor-detail';
+  static const String payment = '/payment';
 }

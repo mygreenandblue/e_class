@@ -17,7 +17,9 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getUser() async {
     try {
       emit(HomeLoading());
+      await AuthLocal.init();
       final userId = await AuthLocal.getUserId();
+      print(userId);
       if (userId != null) {
         final UserModel data = await userApi.getUser(userId: userId);
         final userModel = data;

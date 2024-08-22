@@ -1,6 +1,5 @@
 import 'package:eclass/core/local/auth_local.dart';
-
-import 'package:eclass/feature/home/cubit/home_cubit.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:eclass/feature/login/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:eclass/routing/app_routes/router.dart';
@@ -20,16 +19,16 @@ final ThemeData customDarkTheme = ThemeData(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  WidgetsFlutterBinding.ensureInitialized();
+  initializeDateFormatting('vi', null).then((_) {
+    runApp(const MyApp());
+  });
   await AuthLocal.init();
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => AuthCubit(),
-        ),
-        BlocProvider(
-          create: (context) => HomeCubit(),
         ),
       ],
       child: const MyApp(),

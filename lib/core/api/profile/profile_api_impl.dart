@@ -18,7 +18,7 @@ class ProfileApiImpl implements ProfileApi {
     try {
       print(profile.toJson());
       final response = await _client.post(
-        '/data_manager/patients/',
+        '/clinic_manager/patients/',
         data: profile.toJson(),
         options: Options(validateStatus: (status) => status == 201),
       );
@@ -35,7 +35,7 @@ class ProfileApiImpl implements ProfileApi {
   @override
   Future<Profile?> getProfile(int id) async {
     return getSingleResult(
-      "/data_manager/patients/$id",
+      "/clinic_manager/patients/$id",
       Profile.fromJson,
       ErrorCode.loadProfileFail,
       client: _client,
@@ -46,7 +46,7 @@ class ProfileApiImpl implements ProfileApi {
   Future<Profile> updateProfile(Profile profile) async {
     try {
       final response = await _client.put(
-        '/data_manager/patients/${profile.id}/',
+        '/clinic_manager/patients/${profile.id}/',
         data: json.encode(profile.toJson()),
         options: Options(validateStatus: (status) => status == 200),
       );

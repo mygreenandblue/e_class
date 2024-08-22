@@ -1,10 +1,19 @@
-import 'package:eclass/feature/booking_calendar/widgets/calendar.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:eclass/core/extensions/flutter_extentions.dart';
 import 'package:flutter/material.dart';
+
+import 'package:eclass/feature/booking_calendar/widgets/calendar.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import 'widgets/time_slot.dart';
 
 class BookingCalendarPage extends StatefulWidget {
-  const BookingCalendarPage({super.key});
+  const BookingCalendarPage({
+    Key? key,
+    required this.doctorId,
+  }) : super(key: key);
+  final int doctorId;
 
   @override
   State<BookingCalendarPage> createState() => _BookingCalendarPageState();
@@ -13,6 +22,13 @@ class BookingCalendarPage extends StatefulWidget {
 class _BookingCalendarPageState extends State<BookingCalendarPage> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
+  String? selectedTime; // Variable to store the selected time
+
+  void _handleTimeSelected(String? time) {
+    setState(() {
+      selectedTime = time;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,33 +48,30 @@ class _BookingCalendarPageState extends State<BookingCalendarPage> {
               });
             },
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Số chỗ còn trống: 55",
-              style: TextStyle(fontSize: 18),
+          Expanded(
+            child: TimeSlotsGrid(
+                doctorId: widget.doctorId,
+                date: DateFormat('yyyy-MM-dd').format(_focusedDay).toString(),
+                onTimeSelected: _handleTimeSelected),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal, // Button color
+              minimumSize: const Size(double.infinity, 50), // Full-width button
             ),
-          ),
-          const Expanded(
-            child: TimeSlotsGrid(),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal, // Button color
-                minimumSize:
-                    const Size(double.infinity, 50), // Full-width button
-              ),
-              onPressed: () {
-                // Handle continue button press
-              },
-              child: const Text(
-                "Tiếp tục",
-                style: TextStyle(color: Colors.white),
-              ),
+            onPressed: () {
+              Map<String, dynamic> data = {
+                'time': selectedTime,
+                'date': DateFormat('yyyy-MM-dd').format(_selectedDay).toString()
+              };
+
+              context.pop(data);
+            },
+            child: const Text(
+              "Tiếp tục",
+              style: TextStyle(color: Colors.white),
             ),
-          ),
+          ).padded(),
         ],
       ),
     );

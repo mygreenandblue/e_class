@@ -1,79 +1,94 @@
+import 'package:eclass/core/models/profile.dart';
+import 'package:eclass/feature/profile/cubit/profile_cubit.dart';
 import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Thông tin hồ sơ'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              context.push(AppRouter.profileEditPath);
-            },
-          ),
-        ],
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Image.asset(
-                'assets/logos/logo.png',
-                width: 200,
-                height: 200,
-              ),
+    );
+    return BlocProvider(
+      create: (context) => ProfileCubit()..getProfile(),
+      child: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Thông tin hồ sơ'),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () async {
+                    Profile? updated = await context
+                        .push(AppRouter.profileEditPath, extra: state.profile);
+                    if (updated != null) {
+                      context.read<ProfileCubit>().getProfile();
+                    }
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'Sử dụng Qrcode để khai báo thông tin hành chính tại các cơ sở y tế',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            const Divider(),
-            buildInfoRow('Quan hệ', 'Bản thân'),
-            buildInfoRow('Thẻ BHYT số', ''),
-            buildInfoRow('Họ tên', 'ĐỖ ĐĂNG TÙNG'),
-            buildInfoRow('Ngày sinh', '06/10/2002'),
-            buildInfoRow('Giới tính', 'Nam'),
-            buildInfoRow('Dân tộc', 'Kinh'),
-            buildInfoRow('Quốc tịch', 'Việt Nam'),
-            buildInfoRow('Nghề nghiệp', 'Sinh viên, học sinh'),
-            buildInfoRow('Số điện thoại khác', ''),
-            buildInfoRow('Số CMND/CCCD', ''),
-            buildInfoRow('Địa chỉ thường trú',
-                'Bình Yên, Thạch Thất, Xã Bình Yên, Huyện Thạch Thất, Thành phố Hà Nội'),
-            buildInfoRow('Địa chỉ hiện tại',
-                'Thạch Thất hà nooii, Xã Bình Yên, Huyện Thạch Thất, Thành phố Hà Nội'),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Trang chủ',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Thông tin khám',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Hồ sơ',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Cài đặt',
-          ),
-        ],
+            body: state.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: QrImageView(
+                            data:
+                                'Quan hệ: Bản thân\nHọ tên: ${state.profile?.firstName ?? ''} ${state.profile?.lastName ?? ''}\nNgày sinh: ${state.profile?.dateOfBirth ?? ''}\nGiới tính: ${state.profile?.gender ?? ''}\nDân tộc: ${state.profile?.nationality ?? ''}\nQuốc tịch: ${state.profile?.nation ?? ''}\nNghề nghiệp: ${state.profile?.job ?? ''}\nSĐT: ${state.profile?.phoneNumber ?? ''}\nCMND/CCCD: ${state.profile?.cmnd ?? ''}\nĐịa chỉ: ${state.profile?.address ?? ''}',
+                            version: QrVersions.auto,
+                            size: 250,
+                            gapless: false,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Sử dụng Qrcode để khai báo thông tin hành chính tại các cơ sở y tế',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        const SizedBox(height: 16),
+                        const Divider(),
+                        buildInfoRow('Quan hệ', 'Bản thân'),
+                        // buildInfoRow('Thẻ BHYT số', ''),
+                        buildInfoRow('Họ tên',
+                            '${state.profile?.firstName ?? ''} ${state.profile?.lastName ?? ''}'),
+                        buildInfoRow(
+                            'Ngày sinh', state.profile?.dateOfBirth ?? ''),
+                        buildInfoRow('Giới tính', state.profile?.gender ?? ''),
+                        buildInfoRow(
+                            'Dân tộc', state.profile?.nationality ?? ''),
+                        buildInfoRow('Quốc tịch', state.profile?.nation ?? ''),
+                        buildInfoRow('Nghề nghiệp', state.profile?.job ?? ''),
+                        buildInfoRow(
+                            'Số điện thoại', state.profile?.phoneNumber ?? ''),
+                        buildInfoRow('Số CMND/CCCD', state.profile?.cmnd ?? ''),
+                        buildInfoRow(
+                            'Địa chỉ thường trú', state.profile?.address ?? ''),
+                        buildInfoRow('Địa chỉ hiện tại',
+                            state.profile?.currentAddress ?? ''),
+                      ],
+                    ),
+                  ),
+          );
+        },
       ),
     );
   }

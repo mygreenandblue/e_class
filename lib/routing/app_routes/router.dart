@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:eclass/core/models/booking_time.dart';
+import 'package:eclass/core/models/profile.dart';
 import 'package:eclass/feature/address_form/address_form.dart';
 import 'package:eclass/feature/address_form/cubit/address_cubit.dart';
 import 'package:eclass/feature/booking/view/appoitment_detail.dart';
@@ -13,7 +15,7 @@ import 'package:eclass/feature/contact/contact_page.dart';
 import 'package:eclass/feature/home/view/home_page.dart';
 import 'package:eclass/feature/login/view/login_page.dart';
 import 'package:eclass/feature/notification/view/notification_page.dart';
-import 'package:eclass/feature/profile/cubit/profile_cubit.dart';
+import 'package:eclass/feature/payment/payment_page.dart';
 import 'package:eclass/feature/profile/profile_page.dart';
 import 'package:eclass/feature/profile_edit/profile_edit_page.dart';
 import 'package:eclass/feature/remote_consult/view/remote_consult_page.dart';
@@ -76,11 +78,15 @@ final router = GoRouter(
               },
             ),
             GoRoute(
+              name: 'bookingCalendar',
               path: AppRouter.bookingCalendar,
               pageBuilder: (context, GoRouterState state) {
-                return getPage(
-                  child: const BookingCalendarPage(),
-                  state: state,
+                int doctorId =
+                    int.parse(state.pathParameters['doctorId'] ?? '-1');
+                return NoTransitionPage(
+                  child: BookingCalendarPage(
+                    doctorId: doctorId,
+                  ),
                 );
               },
             ),
@@ -167,20 +173,14 @@ final router = GoRouter(
             GoRoute(
               path: AppRouter.profilePath,
               builder: (context, state) {
-                return BlocProvider(
-                  create: (context) => ProfileCubit(),
-                  child: const ProfilePage(),
-                );
+                return const ProfilePage();
               },
             ),
             GoRoute(
               path: AppRouter.profileEditPath,
               builder: (context, state) {
-                return BlocProvider(
-                  create: (context) {
-                    return ProfileCubit();
-                  },
-                  child: const ProfileEditPage(),
+                return ProfileEditPage(
+                  profile: state.extra as Profile,
                 );
               },
             ),
@@ -221,6 +221,13 @@ final router = GoRouter(
       path: AppRouter.doctorDetail,
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: DoctorDetailPage()),
+    ),
+    GoRoute(
+      path: AppRouter.payment,
+      pageBuilder: (context, state) => NoTransitionPage(
+          child: PaymentPage(
+        bookingDetail: state.extra as BookingDetail,
+      )),
     ),
   ],
 );

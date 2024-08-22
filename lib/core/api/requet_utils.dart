@@ -73,3 +73,33 @@ int? tryParseNullable(String? source, {int? radix}) {
   if (source == null) return null;
   return int.tryParse(source, radix: radix);
 }
+
+Future<List<T>> getDataTimeCollections<T>(
+  String url,
+  T Function(Map<String, dynamic>) fromJson,
+  ErrorCode errorCode, {
+  required Dio client,
+}) async {
+  try {
+    final response = await client.get(
+      url,
+      options: Options(
+        validateStatus: (status) => status == 200,
+      ),
+    );
+    final Map<String, dynamic> body = response.data;
+    if (body['data_time'] == []) {
+      return <T>[];
+    } else {
+      return compute(
+        _collectionFromJson,
+        _CollectionFromJsonSerializationParams(
+          fromJson,
+          (body['data_time'] as List).cast<Map<String, dynamic>>(),
+        ),
+      );
+    }
+  } on DioException catch (exception) {
+    throw exception.unravel(orElse: ApiException(errorCode));
+  }
+}

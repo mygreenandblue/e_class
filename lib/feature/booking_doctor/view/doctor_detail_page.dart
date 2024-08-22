@@ -1,5 +1,4 @@
 import 'package:eclass/core/extensions/flutter_extentions.dart';
-import 'package:eclass/feature/home/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

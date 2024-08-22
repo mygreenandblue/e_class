@@ -16,7 +16,8 @@ class CalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-      firstDay: DateTime.utc(2020, 1, 1),
+      locale: 'vi',
+      firstDay: DateTime.now(),
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: focusedDay,
       selectedDayPredicate: (day) => isSameDay(selectedDay, day),

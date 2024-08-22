@@ -36,4 +36,6 @@ enum ErrorCode {
   loadProfileFail,
   createProfileFail,
   updateProfileFail,
+  loadDoctorFail,
+  loadBookingTimeFail,
 }

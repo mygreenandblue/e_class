@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
-
+import 'package:eclass/core/helpers/messange_helper.dart';
+import 'package:eclass/core/local/auth_local.dart';
 import 'package:eclass/core/models/profile.dart';
 import 'package:eclass/feature/profile/cubit/profile_cubit.dart';
 import 'package:eclass/feature/profile/widgets/date_picker.dart';
@@ -9,28 +10,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileEditPage extends StatefulWidget {
-  const ProfileEditPage({super.key});
+  const ProfileEditPage({super.key, required this.profile});
+  final Profile profile;
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
 }
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
+  TextEditingController dateController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  // TextEditingController bhytController = TextEditingController();
+  TextEditingController cmndController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  String selectedNation = 'Khác';
+  String selectedNationality = 'Khác';
+  String selectedJob = 'Khác';
+  String selectedGender = 'Khác';
+
+  @override
+  void initState() {
+    dateController.text = widget.profile.dateOfBirth ?? '';
+    addressController.text = widget.profile.address ?? '';
+    firstNameController.text = widget.profile.firstName ?? '';
+    lastNameController.text = widget.profile.lastName ?? '';
+    cmndController.text = widget.profile.cmnd ?? '';
+    phoneController.text = widget.profile.phoneNumber ?? '';
+    emailController.text = widget.profile.email ?? '';
+    selectedNation = widget.profile.nation ?? 'Khác';
+    selectedNationality = widget.profile.nationality ?? 'Khác';
+    selectedJob = widget.profile.job ?? 'Khác';
+    selectedGender = widget.profile.gender ?? 'Khác';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController dateController = TextEditingController();
-    TextEditingController addressController = TextEditingController();
-    TextEditingController firstNameController = TextEditingController();
-    TextEditingController lastNameController = TextEditingController();
-    TextEditingController bhytController = TextEditingController();
-    TextEditingController cmndController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    String selectedNation = 'Khác';
-    String selectedNationality = 'Khác';
-    String selectedJob = 'Khác';
-    String selectedGender = 'Khác';
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sửa thông tin hồ sơ'),
@@ -101,14 +119,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               },
             ),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: bhytController,
-              decoration: const InputDecoration(
-                labelText: 'Thẻ BHYT số',
-                hintText: 'Nhập số thẻ BHYT',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            // TextFormField(
+            //   controller: bhytController,
+            //   decoration: const InputDecoration(
+            //     labelText: 'Thẻ BHYT số',
+            //     hintText: 'Nhập số thẻ BHYT',
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
             const SizedBox(height: 8),
             TextFormField(
               controller: cmndController,
@@ -123,27 +141,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             DropdownButtonFormField(
-              value: selectedNation,
-              items: ['Kinh', 'Khác']
-                  .map((label) => DropdownMenuItem(
-                        value: label,
-                        child: Text(label),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedNation = value ?? 'Khác';
-                });
-              },
-              decoration: const InputDecoration(
-                labelText: 'Dân tộc',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 8),
-            DropdownButtonFormField(
               value: selectedNationality,
-              items: ['Việt Nam', 'Khác']
+              items: ['Kinh', 'Khác']
                   .map((label) => DropdownMenuItem(
                         value: label,
                         child: Text(label),
@@ -155,6 +154,25 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 });
               },
               decoration: const InputDecoration(
+                labelText: 'Dân tộc',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 8),
+            DropdownButtonFormField(
+              value: selectedNation,
+              items: ['Việt Nam', 'Khác']
+                  .map((label) => DropdownMenuItem(
+                        value: label,
+                        child: Text(label),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedNation = value ?? 'Khác';
+                });
+              },
+              decoration: const InputDecoration(
                 labelText: 'Quốc tịch',
                 border: OutlineInputBorder(),
               ),
@@ -162,7 +180,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             const SizedBox(height: 8),
             DropdownButtonFormField(
               value: selectedJob,
-              items: ['Sinh viên, học sinh', 'Khác']
+              items: ['Sinh viên, Học sinh', 'Công nhân', 'Khác']
                   .map((label) => DropdownMenuItem(
                         value: label,
                         child: Text(label),
@@ -211,9 +229,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   mergedJson['dateOf_birth'] = dateController.text;
                 }
 
-                if (bhytController.text.isNotEmpty) {
-                  mergedJson['the_bhyt'] = bhytController.text;
-                }
+                // if (bhytController.text.isNotEmpty) {
+                //   mergedJson['the_bhyt'] = bhytController.text;
+                // }
                 mergedJson['gender'] = selectedGender;
 
                 if (cmndController.text.isNotEmpty) {
@@ -235,13 +253,26 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 if (emailController.text.isNotEmpty) {
                   mergedJson['email'] = emailController.text;
                 }
+
+                final id = await AuthLocal.getUserId();
+                if (id != null) {
+                  mergedJson['id'] = id;
+                }
+
                 Map<String, dynamic> mergedJsonStringKeyed =
                     Map<String, dynamic>.from(mergedJson);
-                await context
+                final updated = await context
                     .read<ProfileCubit>()
-                    .creaateProfile(Profile.fromJson(mergedJsonStringKeyed));
+                    .updateProfile(Profile.fromJson(mergedJsonStringKeyed));
+                if (updated != null) {
+                  showSnackBar(
+                      context, 'Thao tác của bạn trên hệ thống đã thành công');
+                } else {
+                  showGenericError(
+                      context, 'Thao tác của bạn trên hệ thống đã thành công');
+                }
 
-                // context.pop();
+                context.pop(updated);
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,

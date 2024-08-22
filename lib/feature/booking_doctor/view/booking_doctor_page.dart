@@ -1,8 +1,10 @@
 import 'package:eclass/core/extensions/flutter_extentions.dart';
 import 'package:eclass/core/widgets/custom_search_field.dart';
-import 'package:eclass/feature/home/view/home_page.dart';
+import 'package:eclass/feature/booking_doctor/cubit/booking_doctor_cubit.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eclass/routing/app_routes/route_path.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class BookingDoctorPage extends StatefulWidget {
@@ -13,130 +15,120 @@ class BookingDoctorPage extends StatefulWidget {
 }
 
 class _BookingDoctorPageState extends State<BookingDoctorPage> {
-  final List<Doctor> doctors = [
-    Doctor(
-      name: "GS Lê Ngọc Thành",
-      rating: 93,
-      stars: 5,
-      specialty: "Ngoại tim mạch",
-      imageUrl: "assets/doctor1.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Công Hựu",
-      rating: 165,
-      stars: 5,
-      specialty: "Ngoại tim mạch",
-      imageUrl: "assets/doctor2.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-    Doctor(
-      name: "TS.BS Nguyễn Đình Liên",
-      rating: 293,
-      stars: 5,
-      specialty: "Phẫu thuật thận tiết niệu - nam học",
-      imageUrl: "assets/doctor3.png", // Placeholder for doctor images
-    ),
-  ];
+  int? id;
+  int? selectedItem;
+  String? name;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chọn bác sĩ'),
+        title: const Text('Chọn bác sĩ'),
       ),
       body: Column(
         children: [
-          CustomSearchField(
+          const CustomSearchField(
             hintText: 'Tìm bác sĩ',
           ).padded(8.0),
           Expanded(
-            child: ListView.builder(
-              itemCount: doctors.length,
-              itemBuilder: (context, index) {
-                final doctor = doctors[index];
-                return Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ListTile(
-                    onTap: () => context.push(AppRouter.doctorDetail),
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(doctor.imageUrl),
-                      radius: 30,
-                    ),
-                    title: Text(
-                      doctor.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.favorite, color: Colors.pink, size: 16),
-                            SizedBox(width: 4),
-                            Text(doctor.rating.toString()),
-                            SizedBox(width: 8),
-                            Icon(Icons.star, color: Colors.yellow, size: 16),
-                            SizedBox(width: 4),
-                            Text(doctor.stars.toString()),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          doctor.specialty,
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                      ],
-                    ),
-                  ),
-                ).padded(8.0);
-              },
+            child: BlocProvider(
+              create: (context) => BookingDoctorCubit()..findAllDoctors(),
+              child: BlocBuilder<BookingDoctorCubit, BookingDoctorState>(
+                builder: (context, state) {
+                  return state.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          itemCount: state.doctors!.length,
+                          itemBuilder: (context, index) {
+                            final doctor = state.doctors![index];
+                            return Card(
+                              color: selectedItem == index
+                                  ? const Color(0xFF8DD3CB)
+                                  : null,
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                onTap: () =>
+                                    context.push(AppRouter.doctorDetail),
+                                leading: SizedBox(
+                                  width: 64,
+                                  height: 64,
+                                  child: CachedNetworkImage(
+                                    progressIndicatorBuilder:
+                                        (context, url, progress) => Center(
+                                      child: CircularProgressIndicator(
+                                        value: progress.progress,
+                                      ),
+                                    ),
+                                    imageUrl: doctor.image ?? '',
+                                  ),
+                                ),
+                                title: Text(
+                                  '${doctor.firstName} ${doctor.firstName}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.favorite,
+                                            color: Colors.pink, size: 16),
+                                        const SizedBox(width: 4),
+                                        Text('5'),
+                                        const SizedBox(width: 8),
+                                        const Icon(Icons.star,
+                                            color: Colors.yellow, size: 16),
+                                        const SizedBox(width: 4),
+                                        Text('5'),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      doctor.specialization ?? '',
+                                      style:
+                                          const TextStyle(color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                                trailing: MaterialButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedItem = index;
+                                      id = doctor.id;
+                                      name =
+                                          '${doctor.firstName} ${doctor.lastName}';
+                                    });
+                                  },
+                                  color: Colors.teal,
+                                  textColor: Colors.white,
+                                  child: const Text('Chọn bác sĩ'),
+                                ),
+                              ),
+                            ).padded(8.0);
+                          },
+                        );
+                },
+              ),
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          final Map<String, dynamic> data = {'id': id, 'name': name};
+          context.pop(data);
+        },
+        label: const Text(
+          'Xác nhận',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.teal,
       ),
     );
   }

@@ -6,7 +6,7 @@ part 'doctor.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Doctor {
   final int id;
-  final String username;
+  final int? user;
   final String? firstName;
   final String? lastName;
   final String? email;
@@ -16,9 +16,12 @@ class Doctor {
   final bool? status;
   final String? position;
   final String? specialization;
-  Doctor({
+  final String? image;
+  final String? nationality;
+  final String? phoneNumber;
+  const Doctor({
     required this.id,
-    required this.username,
+    this.user,
     this.firstName,
     this.lastName,
     this.email,
@@ -28,11 +31,17 @@ class Doctor {
     this.status,
     this.position,
     this.specialization,
+    this.image,
+    this.nationality,
+    this.phoneNumber,
   });
+
+  Map<String, dynamic> toJson() => _$DoctorToJson(this);
+  factory Doctor.fromJson(Map<String, dynamic> json) => _$DoctorFromJson(json);
 
   Doctor copyWith({
     int? id,
-    String? username,
+    int? user,
     String? firstName,
     String? lastName,
     String? email,
@@ -42,10 +51,13 @@ class Doctor {
     bool? status,
     String? position,
     String? specialization,
+    String? image,
+    String? nationality,
+    String? phoneNumber,
   }) {
     return Doctor(
       id: id ?? this.id,
-      username: username ?? this.username,
+      user: user ?? this.user,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
@@ -55,6 +67,9 @@ class Doctor {
       status: status ?? this.status,
       position: position ?? this.position,
       specialization: specialization ?? this.specialization,
+      image: image ?? this.image,
+      nationality: nationality ?? this.nationality,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
     );
   }
 }

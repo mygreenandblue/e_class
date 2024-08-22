@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eclass/core/extensions/flutter_extentions.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -128,8 +129,8 @@ class _HomePageState extends State<HomePage> {
         MainFeatureItem(
             color: const Color(0xFF1B807C),
             iconColor: Colors.red,
-            onTap: () {
-              context.push(AppRouter.booking);
+            onTap: () async {
+              await makePhoneCall('0386209000');
             },
             label: 'Gọi cấp cứu',
             icons: Icons.local_hospital_outlined),
@@ -137,9 +138,7 @@ class _HomePageState extends State<HomePage> {
         MainFeatureItem(
             color: const Color(0xFF1B807C),
             iconColor: Colors.white,
-            onTap: () {
-              context.push('/booking');
-            },
+            onTap: () {},
             label: 'Thông tin khám',
             icons: Icons.medical_information_outlined),
       ],
@@ -193,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                   if (state is HomeInitial) {
                     return const Text('!');
                   } else if (state is HomeLoading) {
-                    return const Text('!');
+                    return const CircularProgressIndicator();
                   } else if (state is Loaded) {
                     return Text(
                       ' ${state.userModel.username}',
@@ -230,5 +229,18 @@ class _HomePageState extends State<HomePage> {
         return const FullScreenSearch();
       },
     );
+  }
+
+  Future<void> makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    print(launchUri);
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(launchUri);
+    } else {
+      throw 'Could not launch $phoneNumber';
+    }
   }
 }
